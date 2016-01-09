@@ -57,13 +57,13 @@ public static class UnityTools {
 
     // Finds all of the points inside of a Circle with parameters.
     // radius(int) of sphere, divisor(int) useful if you only want every 5th or so point using an absolute radius(within this distance), multiplier(int) useful if you only want every 5th or so point using an abstract radius(this many points), zIndex(float) sets the z coordinate of the vector3.
-    public static List<Vector3> PointsInsideCircle(int radius, int divisor, int multiplier, float zIndex) {
+    public static List<Vector3> PointsInsideCircle(int radius, int divisor, float multiplier, float zIndex) {
         List<Vector3> values = new List<Vector3>();
 
         for (int i = -radius/divisor; i <= radius/divisor; i++) {
             for (int j = -radius/divisor; j <= radius/divisor; j++) {
-                if (i * i + j * j <= radius * radius) {
-                    values.Add(new Vector3(j * multiplier, i * multiplier, zIndex));
+                if (i * i + j * j < radius * radius) {
+                    values.Add(new Vector3(j * multiplier, zIndex, i * multiplier));
                 }
             }
         }
@@ -116,12 +116,24 @@ public static class UnityTools {
         for (float i = -length.x / divisor; i < length.x / divisor; i++) {
             for (float j = -length.y / divisor; j < length.y / divisor; j++) {
                 for (float k = -length.z / divisor; k < length.z / divisor; k++) {
-                    values.Add(new Vector3(j * multiplier.x, k * multiplier.y, i * multiplier.z));
+                    values.Add(new Vector3(i * multiplier.x, j * multiplier.y, k * multiplier.z));
                 }
             }
         }
         return values;
     }
+
+    // Finds all of the points inside of a square with parameters.
+    // Length(Vector2) of square, divisor(int) useful if yu only want every 5th or so point using an absolute radius(within this distance), multiplier(Vector2) useful if you only want every 5th or so point using an abstract radius(this many points).
+    public static List<Vector2> PointsInsideSquare(Vector2 length, int divisor, Vector2 multiplier) {
+        List<Vector2> values = new List<Vector2>();
+        for (float i = -length.x/divisor; i < length.x/divisor; i++) {
+            for (float j = -length.y/divisor; j < length.y/divisor; j++) {
+                values.Add(new Vector2(i * multiplier.x, j * multiplier.y));
+            }
+        }
+        return values;
+    } 
 
     // Returns a ceilinged Vector3 to a given place value.
     public static Vector3 Ceiling(Vector3 position, int places) {
@@ -140,7 +152,7 @@ public static class UnityTools {
         return value;
     }
 
-    // Returns the master GameObject.
+    // Returns the M GameObject.
     public static GameObject GetMasterController() {
         return GameObject.FindGameObjectWithTag("GameController");
     }

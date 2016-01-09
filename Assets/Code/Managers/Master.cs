@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class Master : MonoBehaviour {
-    public static Master master;
+    public static Master M;
+    public Game S = new Game();
 
     void Awake() {
-        if (master == null) {
+        if (M == null) {
             DontDestroyOnLoad(gameObject);
-            master = this;
+            M = this;
 
-        } else if (master != this) {
+        } else if (M != this) {
             Destroy(gameObject);
         }
     }
 }
+
